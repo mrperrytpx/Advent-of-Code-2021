@@ -20,4 +20,4 @@ for (let i = 0; i < file.length; i++) {
     }
 }
 
-console.log(depth, horizontal, depth * horizontal);
+console.log(depth * horizontal);
