@@ -15,6 +15,7 @@ for (let i = 0; i < file.length; i++) {
             break;
         case "down":
             depth += parseInt(direction[1]);
+            break;
     }
 }
 
