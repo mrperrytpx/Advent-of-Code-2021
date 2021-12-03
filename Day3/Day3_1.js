@@ -1,34 +1,30 @@
 const readFile = require("fs").readFileSync;
-const file = readFile(__dirname + "/input.txt", "utf-8").split("\n").filter((_) => _.trim());
+const file = readFile(__dirname + "/input.txt", "utf-8").split("\n").filter((_) => _.trim()).map((_) => _.replace("\r", ""));
 
 let gamma = [];
 let epsilon = [];
 
 const binLength = file[0].length;
-let passes = binLength;
+let passes = 0;
 
-while (passes !== 0) {
+while (passes < binLength) {
     let zeros = 0, ones = 0;
     for (let i = 0; i < file.length; i++) {
-        const bit = file[i][passes - 1];
-        if (bit === "0") {
-            zeros++;
-        } else {
-            ones++;
-        }
+        const bit = file[i][passes];
+        bit === "0" ? zeros++ : ones++;
     }
     if (zeros > ones) {
-        gamma.unshift(0);
-        epsilon.unshift(1);
+        gamma.push(0);
+        epsilon.push(1);
     } else {
-        gamma.unshift(1);
-        epsilon.unshift(0);
+        gamma.push(1);
+        epsilon.push(0);
     }
-    passes--;
+    passes++;
 }
 
 gamma = parseInt(gamma.join(""), 2);
 epsilon = parseInt(epsilon.join(""), 2);
+let result = gamma * epsilon;
 
-
-console.log(gamma, epsilon, gamma * epsilon);
+console.log(result);
