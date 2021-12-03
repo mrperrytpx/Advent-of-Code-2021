@@ -1,5 +1,5 @@
 const readFile = require("fs").readFileSync;
-const file = readFile(__dirname + "/input.txt", "utf-8").split("\n").filter((_) => _.trim());
+const file = readFile(__dirname + "/input.txt", "utf-8").split("\n").filter((_) => _.trim()).map((_) => _.replace("\r", ""));
 
 let depth = 0;
 let horizontal = 0;
@@ -21,4 +21,5 @@ for (let i = 0; i < file.length; i++) {
     }
 }
 
-console.log(depth * horizontal);
+let result = depth * horizontal;
+console.log(result);

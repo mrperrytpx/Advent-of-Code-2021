@@ -25,6 +25,6 @@ while (passes < binLength) {
 
 gamma = parseInt(gamma.join(""), 2);
 epsilon = parseInt(epsilon.join(""), 2);
-let result = gamma * epsilon;
 
+let result = gamma * epsilon;
 console.log(result);
