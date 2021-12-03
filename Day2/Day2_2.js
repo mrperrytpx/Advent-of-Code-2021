@@ -17,7 +17,8 @@ for (let i = 0; i < file.length; i++) {
             break;
         case "down":
             aim += parseInt(direction[1]);
+            break;
     }
 }
 
-console.log(depth, horizontal, depth * horizontal);
+console.log(depth * horizontal);
