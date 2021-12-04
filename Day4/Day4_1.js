@@ -12,6 +12,8 @@ for (let i = 1; i < file.length; i += 5) {
     bingoBoards.push(board);
 }
 
+const arrayColumn = (array, column) => array.map(e => e[column]);
+
 function checkBoard(number) {
     for (let i = 0; i < bingoBoards.length; i++) {
         let board = bingoBoards[i];
@@ -21,6 +23,8 @@ function checkBoard(number) {
                 if (boardRow[k] == number) boardRow[k] = true;
             }
             if (boardRow.every(num => num === true)) return { "winner": number, "board": bingoBoards[i] };
+            let boardColumn = arrayColumn(board, j);
+            if (boardColumn.every(num => num === true)) return { "winner": number, "board": bingoBoards[i] };
         }
     }
 }
