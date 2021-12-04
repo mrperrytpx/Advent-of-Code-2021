@@ -14,33 +14,36 @@ for (let i = 1; i < file.length; i += 5) {
 
 const arrayColumn = (array, column) => array.map(e => e[column]);
 
-function checkBoard(number, winners) {
+function checkBoard(bingoNumber, bingoBoards, winners) {
     for (let i = 0; i < bingoBoards.length; i++) {
+        if (winners.some(elem => elem.idx === i)) continue;
         let board = bingoBoards[i];
         for (let j = 0; j < board.length; j++) {
             let boardRow = board[j];
             for (let k = 0; k < boardRow.length; k++) {
-                if (parseInt(boardRow[k]) === number) boardRow[k] = true;
-                if (boardRow.every(num => num === true)) {
-                    bingoBoards.splice(i, 1);
-                    return { "board": board, "number": number };
-                }
-                let boardColumn = arrayColumn(board, j);
-                if (boardColumn.every(num => num === true)) {
-                    bingoBoards.splice(i, 1);
-                    return { "board": board, "number": number };
-                }
+                if (parseInt(boardRow[k]) === bingoNumber) boardRow[k] = true;
             }
-
+            if (boardRow.every(num => num === true)) {
+                return { "board": board, "number": bingoNumber, "idx": i };
+            }
+            let boardColumn = arrayColumn(board, j);
+            if (boardColumn.every(num => num === true)) {
+                return { "board": board, "number": bingoNumber, "idx": i };
+            }
         }
     }
 }
 let winners = [];
 for (let i = 0; i < bingoNumbers.length; i++) {
-    let winner = checkBoard(bingoNumbers[i]);
+    let winner = checkBoard(bingoNumbers[i], bingoBoards, winners);
     if (winner) {
         winners.push(winner);
+        i = 0;
     }
 }
 
-console.log(winners.length);
+let sum = winners[winners.length - 1].board.flat().filter((_) => _ !== true)
+    .map((_) => parseInt(_, 10))
+    .reduce((a, b) => a + b);
+let result = sum * winners[winners.length - 1].number;
+console.log(result);
