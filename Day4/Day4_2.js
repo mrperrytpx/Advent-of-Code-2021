@@ -38,7 +38,7 @@ for (let i = 0; i < bingoNumbers.length; i++) {
     let winner = checkBoard(bingoNumbers[i], bingoBoards, winners);
     if (winner) {
         winners.push(winner);
-        i = 0;
+        i--;
     }
 }
 
