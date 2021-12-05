@@ -56,7 +56,6 @@ pairs.forEach((pair) => {
                 pair[0][0]++;
                 pair[0][1]++;
             }
-
         }
     }
 });
