@@ -19,10 +19,10 @@ let field = {};
 let count = 0;
 
 pairs.forEach((pair) => {
-    let maxX = Math.max(pair[0][0], pair[1][0]);
-    let minX = Math.min(pair[0][0], pair[1][0]);
-    let maxY = Math.max(pair[0][1], pair[1][1]);
-    let minY = Math.min(pair[0][1], pair[1][1]);
+    const maxX = Math.max(pair[0][0], pair[1][0]);
+    const minX = Math.min(pair[0][0], pair[1][0]);
+    const maxY = Math.max(pair[0][1], pair[1][1]);
+    const minY = Math.min(pair[0][1], pair[1][1]);
     if (maxX === minX) {
         for (let i = minY; i <= maxY; i++) {
             const p = maxX + ',' + i;
@@ -34,9 +34,9 @@ pairs.forEach((pair) => {
             field[p] = !field[p] ? 1 : field[p] + 1;
         }
     } else {
-        let diffX = pair[0][0] - pair[1][0];
-        let diffY = pair[0][1] - pair[1][1];
-        let steps = Math.abs(diffX);
+        const diffX = pair[0][0] - pair[1][0];
+        const diffY = pair[0][1] - pair[1][1];
+        const steps = Math.abs(diffX);
         for (let i = 0; i <= steps; i++) {
             const p = pair[0][0] + ',' + pair[0][1];
             field[p] = !field[p] ? 1 : field[p] + 1;
