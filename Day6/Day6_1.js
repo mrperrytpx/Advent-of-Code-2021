@@ -1,5 +1,5 @@
 const readFile = require("fs").readFileSync;
-const file = readFile(__dirname + "/input.txt", "utf-8").split(",").map((_) => parseInt(_, 10));
+const file = readFile(__dirname + "/input.txt", "utf-8").split(",").map(Number);
 
 const fish = new Array(9).fill(0);
 for (let i = 0; i < file.length; i++) {

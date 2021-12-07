@@ -1,5 +1,5 @@
 const readFile = require("fs").readFileSync;
-const file = readFile(__dirname + "/input.txt", "utf-8").split("\n").filter((_) => _.trim()).map((_) => parseInt(_, 10));
+const file = readFile(__dirname + "/input.txt", "utf-8").split("\n").filter((_) => _.trim()).map(Number);
 
 let increments = 0;
 

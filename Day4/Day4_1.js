@@ -1,7 +1,7 @@
 const readFile = require("fs").readFileSync;
 const file = readFile(__dirname + "/input.txt", "utf-8").split("\n").filter((_) => _.trim());
 
-const bingoNumbers = file[0].split(",").map((_) => parseInt(_, 10));
+const bingoNumbers = file[0].split(",").map(Number);
 
 const bingoBoards = [];
 for (let i = 1; i < file.length; i += 5) {
@@ -35,7 +35,7 @@ for (let i = 0; i < bingoNumbers.length; i++) {
     if (winningBoard) {
         let sum = winningBoard.board.flat()
             .filter((_) => _ !== true)
-            .map((_) => parseInt(_, 10))
+            .map(Number)
             .reduce((a, b) => a + b);
         let result = sum * winningBoard.winner;
         console.log(result);

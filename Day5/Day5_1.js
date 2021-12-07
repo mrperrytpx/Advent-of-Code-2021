@@ -10,7 +10,7 @@ file.forEach((pair) => {
 let pairs = [];
 for (let i = 0; i < cooridantes.length; i++) {
     const pair = cooridantes[i];
-    const xy = (pair[0].split(","));
+    const xy = pair[0].split(",");
     const xy2 = pair[1].split(",");
     pairs.push([[...xy], [...xy2]]);
 }
