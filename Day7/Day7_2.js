@@ -7,7 +7,7 @@ const max = Math.max(...file);
 for (let i = 0; i <= max; i++) {
     let fuel = 0;
     for (let j = 0; j < file.length; j++) {
-        let a = Math.abs(i - file[j]);
+        const a = Math.abs(i - file[j]);
         fuel += a * (a + 1) / 2;
     }
     if (fuel < leastFuel || leastFuel == 0) leastFuel = fuel;
