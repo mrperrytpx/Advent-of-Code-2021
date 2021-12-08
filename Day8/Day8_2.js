@@ -25,6 +25,7 @@ for (let i = 0; i < file.length; i++) {
     });
     const leftUp = leftSide[0];
     const middle = leftSide[1];
+
     const others = eight.split("").filter((letter) => {
         if (letter === rightDown) return false;
         if (letter === rightUp) return false;
@@ -38,22 +39,11 @@ for (let i = 0; i < file.length; i++) {
 
     let nine = input.filter((elem) => elem.length === 6).filter((elem) => !elem.includes(leftDown) || !elem.includes(down));
     let six = input.filter((elem) => elem.length === 6).filter((elem) => (!elem.includes(rightUp) || !elem.includes(rightDown)));
+    let zero = input.filter((elem) => elem.length === 6 && (elem !== nine.join("") && elem !== six.join("")));
 
-    let zero = input.filter((elem) => elem.length === 6).filter((elem) => {
-        if (elem === nine.join("")) return false;
-        if (elem === six.join("")) return false;
-        return true;
-    });
-
-    let three = input.filter((elem) => elem.length === 5)
-        .filter((elem) => (!elem.includes(leftDown) || !elem.includes(down)) && (!elem.includes(leftUp) || !elem.includes(middle)));
-    let five = input.filter((elem) => elem.length === 5)
-        .filter((elem) => (!elem.includes(leftDown) || !elem.includes(down)) && (!elem.includes(rightDown) || !elem.includes(rightUp)));
-    let two = input.filter((elem) => elem.length === 5).filter((elem) => {
-        if (elem === three.join("")) return false;
-        if (elem === five.join("")) return false;
-        return true;
-    });
+    let three = input.filter((elem) => elem.length === 5 && ((!elem.includes(leftDown) || !elem.includes(down)) && (!elem.includes(leftUp) || !elem.includes(middle))));
+    let five = input.filter((elem) => elem.length === 5 && (!elem.includes(leftDown) || !elem.includes(down)) && (!elem.includes(rightDown) || !elem.includes(rightUp)));
+    let two = input.filter((elem) => elem.length === 5 && (elem !== three.join("") && elem !== five.join("")));
 
     let outputMap = {
         [one.split("").sort().join("")]: 1,
@@ -71,9 +61,9 @@ for (let i = 0; i < file.length; i++) {
     const resultArray = [];
     for (let j = 0; j < output.length; j++) {
         let numeral = outputMap[output[j].split("").sort().join("")];
-
         resultArray.push(numeral);
     }
+
     result += parseInt(resultArray.join(""));
 }
 
