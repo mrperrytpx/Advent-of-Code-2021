@@ -13,7 +13,10 @@ for (let i = 0; i < file.length; i++) {
             stack.push(file[i][j]);
         } else {
             let popped = stack.pop();
-            if (OPENING.indexOf(popped) != CLOSING.indexOf(file[i][j])) corrupted.push(file[i][j]);
+            if (OPENING.indexOf(popped) != CLOSING.indexOf(file[i][j])) {
+                corrupted.push(file[i][j]);
+                break;
+            }
         }
     }
 }
