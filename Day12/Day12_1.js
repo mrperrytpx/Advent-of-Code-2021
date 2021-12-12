@@ -1,5 +1,5 @@
 const readFile = require("fs").readFileSync;
-const file = readFile(__dirname + "/example.txt", "utf-8").split("\n").filter((_) => _.trim()).map((_) => _.replace("\r", ""));
+const file = readFile(__dirname + "/input.txt", "utf-8").split("\n").filter((_) => _.trim()).map((_) => _.replace("\r", ""));
 
 let pairs = [];
 for (let i = 0; i < file.length; i++) {
@@ -19,24 +19,18 @@ pairs.forEach((pair) => {
     adjecencyList.get(pair[1]).push(pair[0]);
 });
 
+let count = 0;
 const depthFirstSearch = (start, visited = new Set(), stack = []) => {
 
-    if (start === 'end') {
-        let result = [];
-        for (let i = 0; i < stack.length; i++) {
-            result.push(stack[i]);
-        }
-        console.log("Path: ", result, "end");
-    }
+    if (start === 'end') count += 1;
+    if (start.toLowerCase() === start) visited.add(start);
 
-    visited.add(start);
     stack.push(start);
 
     const ends = adjecencyList.get(start);
 
     for (let i = 0; i < ends.length; i++) {
         const idk = ends[i];
-        console.log(idk);
         if (!visited.has(idk)) depthFirstSearch(idk, visited, stack);
     }
 
@@ -44,4 +38,5 @@ const depthFirstSearch = (start, visited = new Set(), stack = []) => {
     visited.delete(start);
 };
 
-console.log(depthFirstSearch('start'));
+depthFirstSearch('start');
+console.log(count);
