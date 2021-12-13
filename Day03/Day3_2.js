@@ -1,5 +1,5 @@
 const readFile = require("fs").readFileSync;
-const file = readFile(__dirname + "/input.txt", "utf-8").split("\n").filter((_) => _.trim()).map((_) => _.replace("\r", ""));
+const file = readFile(__dirname + "/input.txt", "utf-8").replace(/\r/g, "").split("\n").filter((_) => _.trim())
 
 const rating = (array, element, position = 0) => {
     if (array.length === 1) return parseInt(array[0], 2);

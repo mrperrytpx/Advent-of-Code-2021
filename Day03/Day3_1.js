@@ -1,5 +1,5 @@
 const readFile = require("fs").readFileSync;
-const file = readFile(__dirname + "/input.txt", "utf-8").split("\n").filter((_) => _.trim()).map((_) => _.replace("\r", ""));
+const file = readFile(__dirname + "/input.txt", "utf-8").split("\n").filter((_) => _.trim())
 
 let gamma = [];
 let epsilon = [];
