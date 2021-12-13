@@ -20,22 +20,20 @@ pairs.forEach((pair) => {
 });
 
 let count = 0;
-const depthFirstSearch = (start, visited = new Set(), stack = []) => {
-
-    if (start === 'end') count += 1;
-    if (start.toLowerCase() === start) visited.add(start);
-
-    stack.push(start);
-
-    const ends = adjecencyList.get(start);
-
-    for (let i = 0; i < ends.length; i++) {
-        const idk = ends[i];
-        if (!visited.has(idk)) depthFirstSearch(idk, visited, stack);
+const depthFirstSearch = (node, visited = new Set()) => {
+    if (node === 'end') {
+        count += 1;
+        return;
     }
 
-    stack.pop();
-    visited.delete(start);
+    if (node.toLowerCase() === node) visited.add(node);
+
+    const ends = adjecencyList.get(node);
+    for (let i = 0; i < ends.length; i++) {
+        if (!visited.has(ends[i])) depthFirstSearch(ends[i], visited);
+    }
+
+    if (node === node.toLowerCase()) visited.delete(node);
 };
 
 depthFirstSearch('start');
