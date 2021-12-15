@@ -8,11 +8,7 @@ let nodeArray = new Array(ROWS);
 for (let i = 0; i < nodeArray.length; i++) {
     nodeArray[i] = new Array(COLS);
     for (let j = 0; j < nodeArray[i].length; j++) {
-        nodeArray[i][j] = {
-            "x": j,
-            "y": i,
-            "risk": parseInt(file[i][j])
-        };
+        nodeArray[i][j] = [parseInt(file[i][j]), [i, j]];
     }
 }
 
@@ -21,44 +17,42 @@ function isValid(row, col) {
     return nodeArray[row][col];
 }
 
+let start = [0, [0, 0]];
+let end = nodeArray[ROWS - 1][COLS - 1];
 
-let paths = [];
-function idno(start, end) {
+let queue = [start];
+let locked = new Set();
 
-    start.previous = { risk: 0 };
-    let queue = [start];
+while (queue.length !== 0) {
+    queue.sort((a, b) => a[0] - b[0]);
 
-    let visited = new Set();
+    let [risk, pos] = queue.shift();
 
-    while (queue.length > 0) {
-        let item = queue.shift();
-
-        if (item.x === end.x && item.y === end.y) {
-            paths.push(item.risk);
-            continue;
-        }
-
-        const coord = `${item.y},${item.x}`;
-        if (!visited.has(coord)) {
-            visited.add(coord);
-        } else {
-            continue;
-        }
-
-        const above = isValid(item.y - 1, item.x);
-        const below = isValid(item.y + 1, item.x);
-        const leftOf = isValid(item.y, item.x - 1);
-        const rightOf = isValid(item.y, item.x + 1);
-
-        const neighbours = [above, below, leftOf, rightOf].filter((elem) => elem !== false && !visited.has(`${elem.y},${elem.x}`));
-
-        for (let i = 0; i < neighbours.length; i++) {
-            neighbours[i].previous = { "x": item.x, "y": item.y, "risk": item.risk };
-            neighbours[i].risk += item.previous.risk;
-        }
-        queue = [...queue, ...neighbours].sort((a, b) => b.risk - a.risk);
+    if (pos[0] === end[1][0] && pos[1] === end[1][1]) {
+        console.log(risk);
+        break;
     }
+
+    const coord = `${pos[0]},${pos[1]}`;
+    if (locked.has(coord)) continue;
+    locked.add(coord);
+
+    const up = isValid(pos[0] - 1, pos[1]);
+    const down = isValid(pos[0] + 1, pos[1]);
+    const left = isValid(pos[0], pos[1] - 1);
+    const right = isValid(pos[0], pos[1] + 1);
+
+    const neighbours = [up, left, right, down].filter((elem) => elem !== false);
+
+    for (let i = 0; i < neighbours.length; i++) {
+        let neighRow = neighbours[i][1][0];
+        let neighCol = neighbours[i][1][1];
+        neighbours[i][0] = risk + parseInt(file[neighRow][neighCol]);
+        queue.push(neighbours[i]);
+    }
+
+    queue.sort((a, b) => a[0] - b[0]);
+
 }
 
-idno(nodeArray[0][0], nodeArray[ROWS - 1][COLS - 1]);
-console.log(paths);
+// // console.log(nodeArray)
