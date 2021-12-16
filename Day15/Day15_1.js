@@ -1,5 +1,5 @@
 const readFile = require("fs").readFileSync;
-const file = readFile(__dirname + "/example.txt", "utf-8").replace(/\r/g, "").split("\n").filter((_) => _.trim());
+const file = readFile(__dirname + "/input.txt", "utf-8").replace(/\r/g, "").split("\n").filter((_) => _.trim());
 
 const COLS = file[0].length;
 const ROWS = file.length;
@@ -14,7 +14,7 @@ for (let i = 0; i < nodeArray.length; i++) {
 
 function isValid(row, col) {
     if (row < 0 || col < 0 || row >= ROWS || col >= COLS) return false;
-    return nodeArray[row][col];
+    return [0, [row, col]];
 }
 
 let start = [0, [0, 0]];
@@ -45,14 +45,9 @@ while (queue.length !== 0) {
     const neighbours = [up, left, right, down].filter((elem) => elem !== false);
 
     for (let i = 0; i < neighbours.length; i++) {
-        let neighRow = neighbours[i][1][0];
-        let neighCol = neighbours[i][1][1];
-        neighbours[i][0] = risk + parseInt(file[neighRow][neighCol]);
+        let [, [row, col]] = neighbours[i];
+        neighbours[i][0] = risk + parseInt(file[row][col]);
         queue.push(neighbours[i]);
     }
 
-    queue.sort((a, b) => a[0] - b[0]);
-
 }
-
-// // console.log(nodeArray)
