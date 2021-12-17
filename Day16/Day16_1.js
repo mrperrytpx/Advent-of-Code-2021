@@ -1,50 +1,67 @@
 const readFile = require("fs").readFileSync;
-const file = readFile(__dirname + "/example.txt", "utf-8").replace(/\r/g, "").trim();
+const file = readFile(__dirname + "/input.txt", "utf-8").replace(/\r/g, "").trim();
 
 let binaryString = "";
 for (let i = 0; i < file.length; i++) {
     binaryString += parseInt(file[i], 16).toString(2).padStart(4, 0);
 }
 
-function decode(string, startingIndex = 0, sumOfVersions = 0) {
-    const versionBinary = string.slice(startingIndex, startingIndex + 3);
-    const version = parseInt(versionBinary, 2);
+let versionSum = 0;
 
-    const typeBinary = string.slice(startingIndex + 3, startingIndex + 6);
-    const type = parseInt(typeBinary, 2);
+function decodePacket(index) {
+    const versionBits = binaryString.slice(index, index + 3);
+    const version = parseInt(versionBits, 2);
+    versionSum += version;
+    const typeBits = binaryString.slice(index + 3, index + 6);
+    const typeId = parseInt(typeBits, 2);
 
-    if (type === 4) {
-        let lastPair = false;
-        let value = "";
-        let step = 0;
+    index += 6;
+    if (typeId === 4) {
+        let validPair = true;
 
-        while (lastPair !== true) {
-            let startingBitIndex = parseInt(string[startingIndex + 6 + step]);
-            let bitGroup = string.slice(startingIndex + 6 + step + 1, startingIndex + 6 + step + 5);
+        while (validPair !== false) {
+            const nextBit = parseInt(binaryString.charAt(index));
 
-            if (!startingBitIndex) {
-                lastPair = true;
-            }
-
-            value += bitGroup;
-            step += 5;
+            if (nextBit !== 1) validPair = false;
+            index += 5;
         }
-
-        value = parseInt(value, 2);
-        startingIndex += 6 + step;
-    } else {
-        let lengthType = parseInt(string[startingIndex + 6]);
-
-        if (lengthType === 0) {
-            lengthOfSubpackets = parseInt(string.slice(startingIndex + 6 + 1, startingIndex + 6 + 1 + 15), 2);
-            console.log(lengthOfSubpackets);
-        }
+        return index;
 
     }
 
-    sumOfVersions += version;
-    return { startingIndex, sumOfVersions };
+    if (typeId !== 4) {
+        const lengthTypeId = parseInt(binaryString.charAt(index));
 
+        if (lengthTypeId === 0) {
+            index += 1;
+
+            const lengthInBits = binaryString.slice(index, index + 15);
+            const lengthOfPackets = parseInt(lengthInBits, 2);
+            index += 15;
+
+            let shouldStopAt = index + lengthOfPackets;
+
+            while (index !== shouldStopAt) {
+                index = decodePacket(index);
+            }
+
+            return index;
+        }
+
+        if (lengthTypeId === 1) {
+            index += 1;
+
+            const numOfPacketsInBits = binaryString.slice(index, index + 11);
+            const numOfPackets = parseInt(numOfPacketsInBits, 2);
+            index += 11;
+
+            for (let i = 0; i < numOfPackets; i++) {
+                index = decodePacket(index);
+            }
+        }
+    }
+    return index;
 }
 
-console.log(decode(binaryString));
+decodePacket(0);
+console.log(versionSum);
