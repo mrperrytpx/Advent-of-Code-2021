@@ -21,6 +21,7 @@ function decodePacket(index) {
 
         while (validPair !== false) {
             const nextBit = parseInt(binaryString.charAt(index));
+
             if (nextBit !== 1) validPair = false;
             index += 5;
         }
@@ -34,10 +35,8 @@ function decodePacket(index) {
         if (lengthTypeId === 0) {
             index += 1;
 
-            console.log(binaryString.slice(index, index + 15));
             const lengthInBits = binaryString.slice(index, index + 15);
             const lengthOfPackets = parseInt(lengthInBits, 2);
-
             index += 15;
 
             let shouldStopAt = index + lengthOfPackets;
@@ -51,9 +50,9 @@ function decodePacket(index) {
 
         if (lengthTypeId === 1) {
             index += 1;
+
             const numOfPacketsInBits = binaryString.slice(index, index + 11);
             const numOfPackets = parseInt(numOfPacketsInBits, 2);
-
             index += 11;
 
             for (let i = 0; i < numOfPackets; i++) {

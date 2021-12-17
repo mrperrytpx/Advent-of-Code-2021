@@ -8,6 +8,33 @@ for (let i = 0; i < file.length; i++) {
 
 let versionSum = 0;
 
+function newValue(type, val1, val2) {
+    let result = 0;
+    switch (type) {
+        case 0:
+            result = val1 + val2;
+            break;
+        case 1:
+            result = val1 * val2;
+            break;
+        case 2:
+            result = Math.min(val1, val2);
+            break;
+        case 3:
+            result = Math.max(val1, val2);
+            break;
+        case 5:
+            result = val1 > val2 ? 1 : 0;
+            break;
+        case 6:
+            result = val1 > val2 ? 0 : 1;
+            break;
+        case 7:
+            result = val1 === val2 ? 1 : 0;
+    }
+    return result;
+}
+
 function decodePacket(index) {
     const versionBits = binaryString.slice(index, index + 3);
     const version = parseInt(versionBits, 2);
@@ -23,9 +50,9 @@ function decodePacket(index) {
             const nextBit = parseInt(binaryString.charAt(index));
 
             if (nextBit !== 1) validPair = false;
-            // const bitPair = binaryString.slice(index + 1, index + 5);
+            const bitPair = binaryString.slice(index + 1, index + 5);
             index += 5;
-            // literalValue += bitPair;
+            literalValue += bitPair;
         }
         return index;
 
@@ -37,10 +64,8 @@ function decodePacket(index) {
         if (lengthTypeId === 0) {
             index += 1;
 
-            console.log(binaryString.slice(index, index + 15));
             const lengthInBits = binaryString.slice(index, index + 15);
             const lengthOfPackets = parseInt(lengthInBits, 2);
-
             index += 15;
 
             let shouldStopAt = index + lengthOfPackets;
@@ -54,9 +79,9 @@ function decodePacket(index) {
 
         if (lengthTypeId === 1) {
             index += 1;
+
             const numOfPacketsInBits = binaryString.slice(index, index + 11);
             const numOfPackets = parseInt(numOfPacketsInBits, 2);
-
             index += 11;
 
             for (let i = 0; i < numOfPackets; i++) {
@@ -67,5 +92,5 @@ function decodePacket(index) {
     return index;
 }
 
-decodePacket(0);
+decodePacket(0, 0);
 console.log(versionSum);
